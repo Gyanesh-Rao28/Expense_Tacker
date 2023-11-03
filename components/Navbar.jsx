@@ -41,7 +41,7 @@ const Navbar = () => {
                 <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
                     <Link href="/" className="flex items-center">
                         <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 mr-3" alt="Flowbite Logo" />
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Tracker</span>
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Todo Tracker</span>
                     </Link>
                     <div className="flex items-center">
                         {authToken  ? 
