@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { addDoc, collection, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 
 export default function Home() {
@@ -26,7 +25,7 @@ export default function Home() {
           name: NewItems.name.trim(),
           price: NewItems.price,
         });
-        setNewItems({name: '', price: '' });
+        setNewItems({ name: '', price: '' });
         readItems();
       } catch (error) {
         console.error('Error adding document: ', error);
@@ -34,9 +33,12 @@ export default function Home() {
     }
   };
 
+  // read items
+
   const readItems = async (userId) => {
     try {
-      const itemsRef = collection(db, "items"); // Correct collection name here (assuming it's 'items')
+      const itemsRef = collection(db, "items");
+      
       const q = query(itemsRef, where("userId", "==", userId));
 
       const querySnapshot = await getDocs(q);
@@ -44,7 +46,6 @@ export default function Home() {
 
       querySnapshot.forEach((doc) => {
         items.push({ ...doc.data(), id: doc.id });
-        // console.log(doc.id);
       });
 
       setItems(items);
@@ -59,12 +60,15 @@ export default function Home() {
     }
   };
 
+  // delete items
+
   const deleteItem = async (id) => {
     try {
       await deleteDoc(doc(db, 'items', id));
-      router.push('/');
     } catch (error) {
       console.error('Error deleting document: ', error);
+    } finally {
+      router.push('/')
     }
   };
 
@@ -72,21 +76,19 @@ export default function Home() {
     const token = localStorage.getItem("auth-token");
 
     if (token) {
-      
+
       const storedUser = localStorage.getItem("auth-user");
       const parsedUser = JSON.parse(storedUser);
       if (parsedUser) {
         setuser(parsedUser)
-    
         readItems(parsedUser.userId)
       }
-
-    }else{
+    } else {
       router.push('/login')
     }
 
   }, [])
-  
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between sm:p-24 p-4">

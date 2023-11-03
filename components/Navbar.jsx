@@ -1,13 +1,21 @@
 'use client'
 import { logout } from '@/controllers/fireAuth'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import React, { useEffect, useState } from 'react'
-
+useRouter
 
 
 const Navbar = () => {
-    const [authToken, setAuthToken] = useState(null);
+    const router = useRouter()
+
+    const [authToken, setAuthToken] = useState(false);
+
+    const onLogout = ()=>{
+        logout()
+        router.push('/login')
+    }
 
     useEffect(() => {
         
@@ -27,7 +35,7 @@ const Navbar = () => {
                     </Link>
                     <div className="flex items-center">
                         {authToken !== null ? 
-                            <button onClick={() => logout()} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 text-center">
+                            <button onClick={onLogout} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-2 text-center">
                                 Logout
                             </button>
                          : 

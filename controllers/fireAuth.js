@@ -1,29 +1,64 @@
 const { auth } = require("@/firebase");
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, getRedirectResult } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 const provider = new GoogleAuthProvider();
-const cors = require("cors")({ origin: true });
 
-export const Signup = async (email, password) => {
+export const EmailSignup = async (username, email, password) => {
 
     try {
-        const User = await createUserWithEmailAndPassword(auth, email, password)
-        console.log(User.user)
-
+        await createUserWithEmailAndPassword(auth, email, password)
+        await updateProfile(auth.currentUser, {
+            displayName: username
+        })
     } catch (error) {
         console.error(error)
     }
 }
 
-export const logIn = async (email, password) => {
+export const EmailLogIn = async (email, password) => {
     try {
         const User = await signInWithEmailAndPassword(auth, email, password)
-        console.log(User.user)
+        const token = User.user.accessToken
+        const userData = {
+            userId: User.user.uid,
+            username: User.user.displayName,
+            email: User.user.email,
+            photoURL: User.user.photoURL
+        }
+
+        // console.log(token)
+        // console.log(userData)
+        localStorage.setItem("auth-token", token)
+        localStorage.setItem("auth-user", JSON.stringify(userData))
+        
+        // const auth_token = localStorage.getItem("auth-token");
+        // console.log(auth_token)
+
+        return true
 
     } catch (error) {
         console.error(error)
     }
 }
 
+
+export const googleLogin = async () => {
+    const result = await signInWithPopup(auth, provider)
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    
+    const userData = {
+        userId: result.user.uid,
+        username: result.user.displayName,
+        email: result.user.email,
+        photoURL: result.user.photoURL
+    }
+    
+    localStorage.setItem("auth-token", token)
+    localStorage.setItem("auth-user", JSON.stringify(userData))
+    
+    
+    // const auth_user = localStorage.getItem("auth-user");
+}
 export const getCurrentUser = async () => {
     try {
         onAuthStateChanged(auth, (user) => {
@@ -46,31 +81,6 @@ export const getCurrentUser = async () => {
     } catch (error) {
         console.log(error)
     }
-}
-
-export const googleLogin = async () => {
-    const result = await signInWithPopup(auth, provider)
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-
-    const userData = {
-        userId: result.user.uid,
-        username: result.user.displayName,
-        email: result.user.email,
-        photoURL: result.user.photoURL
-    }
-
-    localStorage.setItem("auth-token", token)
-    localStorage.setItem("auth-user", JSON.stringify(userData))
-
-
-    const auth_token = localStorage.getItem("auth-token");
-    const auth_user = localStorage.getItem("auth-user");
-
-    // console.log(auth_token)
-
-
-
 }
 
 
