@@ -3,9 +3,6 @@ import { useState, useEffect } from 'react';
 import { addDoc, collection, getDocs, deleteDoc, doc, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useRouter } from 'next/navigation';
-import Loading from './loading';
-import { Suspense } from 'react';
-
 
 
 export default function Home() {
@@ -35,34 +32,6 @@ export default function Home() {
       }
     }
   };
-
-  // read items
-
-  // const readItems = async (userId) => {
-
-
-  //   const q = query(collection(db, "items"), where("userId", "==", userId));
-
-
-
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     const items = [];
-
-  //     querySnapshot.forEach((doc) => {
-  //       items.push({ ...doc.data(), id: doc.id });
-  //     });
-
-  //     setItems(items);
-
-  //   })
-
-  //   const calculateTotal = () => {
-  //     const totalPrice = items.reduce((sum, item) => sum + parseFloat(item.price), 0);
-  //     setTotal(totalPrice);
-  //   };
-  //   calculateTotal();
-
-  // };
 
   // delete items
 
