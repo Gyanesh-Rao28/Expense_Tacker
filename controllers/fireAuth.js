@@ -1,5 +1,5 @@
 const { auth } = require("@/firebase");
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, getRedirectResult } from "firebase/auth";
 const provider = new GoogleAuthProvider();
 const cors = require("cors")({ origin: true });
 

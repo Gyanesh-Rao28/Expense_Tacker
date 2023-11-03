@@ -1,10 +1,10 @@
 'use client'
 import { googleLogin } from '@/controllers/fireAuth'
+// import { ui, uiConfig } from '@/firebase'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
-Link
+// import React, { useEffect } from 'react'
 
 
 const Login = () => {
@@ -14,9 +14,16 @@ const Login = () => {
         await googleLogin()
         router.push('/')
     }
+
+    // useEffect(() => {
+    //     ui.start('#firebaseui-auth-container', uiConfig);
+        
+    // }, [])
+    
+
     return (
         <>
-            <section>
+            <section >
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                         <Image className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" height={36} width={36} />
